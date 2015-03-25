@@ -11,8 +11,7 @@ import (
 const Usage string = `Usage: servant [DIR] [PORT]`
 
 func main() {
-	dir := "."
-	port := "8080"
+	dir, port := ".", "8080"
 
 	switch {
 	case len(os.Args) == 2 && os.Args[1] == "-h":
