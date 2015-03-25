@@ -1,16 +1,28 @@
 package main
 
 import (
-	"flag"
+	"fmt"
 	"log"
 	"net/http"
+	"os"
 )
 
-func main() {
-	dir := flag.String("d", ".", "directory to serve")
-	port := flag.String("p", "8080", "TCP port to listen on")
-	flag.Parse()
+const Usage string = `Usage: servant [DIR] [PORT]`
 
-	log.Printf("Serving %s on http://127.0.0.1:%s/\n", *dir, *port)
-	log.Fatal(http.ListenAndServe(":"+*port, http.FileServer(http.Dir(*dir))))
+func main() {
+	dir := "."
+	port := "8080"
+
+	switch {
+	case len(os.Args) == 2 && os.Args[1] == "-h":
+		fmt.Println(Usage)
+		os.Exit(0)
+	case len(os.Args) == 2:
+		dir = os.Args[1]
+	case len(os.Args) == 3:
+		dir, port = os.Args[1], os.Args[2]
+	}
+
+	log.Printf("Serving %s on http://127.0.0.1:%s/\n", dir, port)
+	log.Fatal(http.ListenAndServe(":"+port, http.FileServer(http.Dir(dir))))
 }
