@@ -1,3 +1,4 @@
+// A simple static HTTP server, tailored to my preferences.
 package main
 
 import (
