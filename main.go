@@ -11,6 +11,7 @@ import (
 const Usage string = `Usage: servant [DIR] [PORT]`
 
 func main() {
+	// defaults
 	dir, port := ".", "8080"
 
 	switch {
