@@ -2,30 +2,22 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"log"
 	"net/http"
-	"os"
 )
 
-const Usage string = `Usage: servant [DIR] [PORT]`
-
 func main() {
-	// defaults
-	dir, port := ".", "8080"
-
-	switch len(os.Args) {
-	case 2:
-		if os.Args[1] == "-h" {
-			fmt.Println(Usage)
-			os.Exit(1)
-		} else {
-			dir = os.Args[1]
-		}
-	case 3:
-		dir, port = os.Args[1], os.Args[2]
+	dir := flag.String("d", ".", "directory to serve")
+	port := flag.String("p", "8080", "TCP port to listen on")
+	ip := flag.String("i", "127.0.0.1", "IP Address to listen on")
+	flag.Usage = func() {
+		fmt.Println("What can I do for you, sir?")
+		flag.PrintDefaults()
 	}
+	flag.Parse()
 
-	log.Printf("Serving %s on http://0.0.0.0:%s/\n", dir, port)
-	log.Fatal(http.ListenAndServe(":"+port, http.FileServer(http.Dir(dir))))
+	log.Printf("Serving %s on http://%s:%s/\n", *dir, *ip, *port)
+	log.Fatal(http.ListenAndServe(*ip+":"+*port, http.FileServer(http.Dir(*dir))))
 }
