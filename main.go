@@ -1,4 +1,4 @@
-// A simple static HTTP server, tailored to my preferences.
+// A simple static HTTP server.
 package main
 
 import (
@@ -6,18 +6,30 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 )
 
 func main() {
-	dir := flag.String("d", ".", "directory to serve")
-	port := flag.String("p", "8080", "TCP port to listen on")
-	ip := flag.String("i", "127.0.0.1", "IP Address to listen on")
+	port := flag.String("p", "8080", "TCP port")
+	ip := flag.String("i", "127.0.0.1", "IP address")
+
 	flag.Usage = func() {
-		fmt.Println("What can I do for you, sir?")
+		fmt.Printf("Usage: %s [-p <port>] [-i <ipaddr>] [dir]\n", os.Args[0])
 		flag.PrintDefaults()
 	}
 	flag.Parse()
 
-	log.Printf("Serving %s on http://%s:%s/\n", *dir, *ip, *port)
-	log.Fatal(http.ListenAndServe(*ip+":"+*port, http.FileServer(http.Dir(*dir))))
+	var dir string
+	switch d := flag.Arg(0); {
+	case d == "":
+		dir = "."
+	default:
+		if _, err := os.Stat(d); os.IsNotExist(err) {
+			log.Fatalf("Directory does not exist: %s\n", d)
+		}
+		dir = d
+	}
+
+	log.Printf("Serving %s on http://%s:%s/\n", dir, *ip, *port)
+	log.Fatal(http.ListenAndServe(*ip+":"+*port, http.FileServer(http.Dir(dir))))
 }
