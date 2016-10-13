@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 )
 
 func main() {
@@ -31,5 +32,12 @@ func main() {
 	}
 
 	log.Printf("Serving %s on http://%s:%s/\n", dir, *ip, *port)
-	log.Fatal(http.ListenAndServe(*ip+":"+*port, http.FileServer(http.Dir(dir))))
+	log.Fatal(http.ListenAndServe(*ip+":"+*port, LogMiddleware(http.FileServer(http.Dir(dir)))))
+}
+
+func LogMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
+		next.ServeHTTP(rw, r)
+		log.Printf("%v %v %v\n", r.Method, r.URL, strings.Split(r.RemoteAddr, ":")[0])
+	})
 }
