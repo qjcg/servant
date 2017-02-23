@@ -1,4 +1,4 @@
-// A simple static HTTP server.
+// Simply serve HTTP.
 package main
 
 import (
