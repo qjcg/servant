@@ -7,7 +7,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"strings"
 )
 
 func main() {
@@ -38,6 +37,6 @@ func main() {
 func LogMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
 		next.ServeHTTP(rw, r)
-		log.Printf("%v %v %v\n", r.Method, r.URL, strings.Split(r.RemoteAddr, ":")[0])
+		log.Printf("%v %v %v\n", r.Method, r.URL, r.RemoteAddr)
 	})
 }
