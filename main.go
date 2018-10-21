@@ -7,6 +7,9 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
+
+	"git.jgosset.net/srv/git/color.git"
 )
 
 func main() {
@@ -31,12 +34,39 @@ func main() {
 	}
 
 	log.Printf("Serving %s on http://%s:%s/\n", dir, *ip, *port)
-	log.Fatal(http.ListenAndServe(*ip+":"+*port, LogMiddleware(http.FileServer(http.Dir(dir)))))
+	log.Fatal(
+		http.ListenAndServe(
+			*ip+":"+*port,
+			LogMiddleware(
+				http.FileServer(
+					http.Dir(dir)))))
 }
 
+// LogMiddleware is middleware for logging HTTP requests.
 func LogMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
 		next.ServeHTTP(rw, r)
-		log.Printf("%v %v %v\n", r.Method, r.URL, r.RemoteAddr)
+
+		remoteIP := strings.Split(r.RemoteAddr, ":")[0]
+
+		var coloredMethod string
+		switch r.Method {
+		case "GET":
+			coloredMethod = color.Colored(color.GreenB, color.Black, r.Method)
+		case "HEAD":
+			coloredMethod = color.Colored(color.Yellow, color.Black, r.Method)
+		case "DELETE":
+			coloredMethod = color.Colored(color.RedB, color.Black, r.Method)
+		case "POST":
+			coloredMethod = color.Colored(color.CyanB, color.Black, r.Method)
+		default:
+			coloredMethod = color.Colored(color.White, color.Black, r.Method)
+		}
+
+		log.Printf("%-s %-s %s\n",
+			coloredMethod,
+			r.URL,
+			remoteIP,
+		)
 	})
 }
