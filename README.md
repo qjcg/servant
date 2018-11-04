@@ -2,9 +2,6 @@
 
 Simply serve HTTP.
 
-**NOTE: This is pre-alpha software. Several
-features are not yet fully implemented.**
-
 
 ## Features
 
