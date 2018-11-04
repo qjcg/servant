@@ -1,5 +1,13 @@
 # Servant
 
+[![Build Status][badge_build]][travis_servant]
+[![GoReportCard][badge_reportcard]][reportcard]
+
+[badge_build]: https://travis-ci.org/qjcg/servant.svg?branch=master
+[badge_reportcard]: https://goreportcard.com/badge/github.com/qjcg/servant
+[travis_4d]: https://travis-ci.org/qjcg/servant
+[reportcard]: https://goreportcard.com/report/github.com/qjcg/servant
+
 Simply serve HTTP.
 
 
@@ -8,6 +16,11 @@ Simply serve HTTP.
 - Serve HTTP my way
 - That's it
 
+## Install
+
+```sh
+go get -u github.com/qjcg/servant
+```
 
 ## Usage
 

@@ -1,0 +1,38 @@
+language: go
+go:
+  - 1.x
+
+env:
+  global:
+  - FPREFIX=servant_${TRAVIS_TAG}
+  - DSTDIR=${TRAVIS_BUILD_DIR}/out
+  - GO111MODULE=on
+  matrix:
+  - GOOS=linux   GOARCH=amd64
+  - GOOS=linux   GOARCH=arm
+  - GOOS=linux   GOARCH=arm64
+  - GOOS=linux   GOARCH=mips  GOMIPS=softfloat
+  - GOOS=darwin  GOARCH=amd64
+  - GOOS=windows GOARCH=amd64
+
+before_install:
+  - mkdir -p ${DSTDIR}
+
+script:
+  - go test -v ./...
+  - go build -o ${FPREFIX}_${GOOS}_${GOARCH}
+
+  # TODO: Rename files before archiving them, for ease of use after user
+  # downloads.
+  # See: "info tar transform"
+  - tar --transform='flags=r;s,_.*,,g' -vzcf ${DSTDIR}/${FPREFIX}_${GOOS}_${GOARCH}.tgz ${FPREFIX}_${GOOS}_${GOARCH}
+
+deploy:
+  provider: releases
+  api_key:
+    secure: X6ihaSrHeeCunRzgOxKyfKq3063OXDT96cnwdXk/f37YXtEZM7FyC32hiAsUU9+0yfvxkBZsgaKFUk5aEpzFt5NK/fbSiCULIwaZh434HAiFNhLE/IjHyBtOp0D0m5kt6SwhP1fyr1iRS4aDfT30GgvOgDn8cjHDwafjnEGFFxQ=
+  skip_cleanup: true
+  file_glob: true
+  file: out/*
+  on:
+    tags: true
