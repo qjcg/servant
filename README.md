@@ -5,7 +5,7 @@
 
 [badge_build]: https://travis-ci.org/qjcg/servant.svg?branch=master
 [badge_reportcard]: https://goreportcard.com/badge/github.com/qjcg/servant
-[travis_4d]: https://travis-ci.org/qjcg/servant
+[travis_servant]: https://travis-ci.org/qjcg/servant
 [reportcard]: https://goreportcard.com/report/github.com/qjcg/servant
 
 Simply serve HTTP.
