@@ -2,11 +2,14 @@
 
 [![Build Status][badge_build]][travis_servant]
 [![GoReportCard][badge_reportcard]][reportcard]
+[![GoDoc][badge_godoc]][godoc]
 
 [badge_build]: https://travis-ci.org/qjcg/servant.svg?branch=master
 [badge_reportcard]: https://goreportcard.com/badge/github.com/qjcg/servant
 [travis_servant]: https://travis-ci.org/qjcg/servant
 [reportcard]: https://goreportcard.com/report/github.com/qjcg/servant
+[badge_godoc]: https://godoc.org/github.com/qjcg/servant?status.svg
+[godoc]: https://godoc.org/github.com/qjcg/servant
 
 Simply serve HTTP.
 
