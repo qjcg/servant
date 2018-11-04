@@ -9,7 +9,7 @@ import (
 	"git.jgosset.net/srv/git/color.git"
 )
 
-// LogMiddleware is middleware for logging HTTP requests.
+// Log provides middleware for logging HTTP requests.
 func Log(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
 		next.ServeHTTP(rw, r)
