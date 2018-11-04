@@ -7,17 +7,18 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"strings"
 
-	"git.jgosset.net/srv/git/color.git"
+	"github.com/qjcg/servant/pkg/middleware"
 )
 
 func main() {
+	tlsCert := flag.String("c", "", "TLS certificate")
+	tlsKey := flag.String("k", "", "TLS key")
 	port := flag.String("p", "8080", "TCP port")
 	ip := flag.String("i", "127.0.0.1", "IP address")
 
 	flag.Usage = func() {
-		fmt.Printf("Usage: %s [-p <port>] [-i <ipaddr>] [dir]\n", os.Args[0])
+		fmt.Printf("Usage: %s [-c <TLSCert>] [-k <TLSKey>] [-i <IPAddr>] [-p <port>] [dir]\n", os.Args[0])
 		flag.PrintDefaults()
 	}
 	flag.Parse()
@@ -33,40 +34,23 @@ func main() {
 		dir = d
 	}
 
-	log.Printf("Serving %s on http://%s:%s/\n", dir, *ip, *port)
-	log.Fatal(
-		http.ListenAndServe(
-			*ip+":"+*port,
-			LogMiddleware(
-				http.FileServer(
-					http.Dir(dir)))))
-}
-
-// LogMiddleware is middleware for logging HTTP requests.
-func LogMiddleware(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
-		next.ServeHTTP(rw, r)
-
-		remoteIP := strings.Split(r.RemoteAddr, ":")[0]
-
-		var coloredMethod string
-		switch r.Method {
-		case "GET":
-			coloredMethod = color.Colored(color.GreenB, color.Black, r.Method)
-		case "HEAD":
-			coloredMethod = color.Colored(color.Yellow, color.Black, r.Method)
-		case "DELETE":
-			coloredMethod = color.Colored(color.RedB, color.Black, r.Method)
-		case "POST":
-			coloredMethod = color.Colored(color.CyanB, color.Black, r.Method)
-		default:
-			coloredMethod = color.Colored(color.White, color.Black, r.Method)
-		}
-
-		log.Printf("%-s %-s %s\n",
-			coloredMethod,
-			r.URL,
-			remoteIP,
-		)
-	})
+	// If a TLS key & cert are provided, serve HTTPS, otherwise HTTP.
+	if *tlsCert != "" && *tlsKey != "" {
+		log.Printf("Serving %s on https://%s:%s/\n", dir, *ip, *port)
+		log.Fatal(
+			http.ListenAndServeTLS(
+				*ip+":"+*port,
+				*tlsCert, *tlsKey,
+				middleware.Log(
+					http.FileServer(
+						http.Dir(dir)))))
+	} else {
+		log.Printf("Serving %s on http://%s:%s/\n", dir, *ip, *port)
+		log.Fatal(
+			http.ListenAndServe(
+				*ip+":"+*port,
+				middleware.Log(
+					http.FileServer(
+						http.Dir(dir)))))
+	}
 }
