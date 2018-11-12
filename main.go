@@ -18,7 +18,7 @@ func main() {
 	ip := flag.String("i", "127.0.0.1", "IP address")
 
 	flag.Usage = func() {
-		fmt.Printf("Usage: %s [-c <TLSCert>] [-k <TLSKey>] [-i <IPAddr>] [-p <port>] [dir]\n", os.Args[0])
+		fmt.Printf("Usage: %s [-c <TLSCert>] [-k <TLSKey>] [-i <IPAddr>] [-p <Port>] [Dir]\n", os.Args[0])
 		flag.PrintDefaults()
 	}
 	flag.Parse()
