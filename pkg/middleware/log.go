@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"strings"
 
-	"git.jgosset.net/srv/git/color.git"
+	"gossetx.com/color"
 )
 
 // Log provides middleware for logging HTTP requests.

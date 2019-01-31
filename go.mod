@@ -1,3 +1,7 @@
 module github.com/qjcg/servant
 
-require git.jgosset.net/srv/git/color.git v0.20.0
+go 1.12
+
+replace gossetx.com/color => ../color
+
+require gossetx.com/color v0.0.0-00010101000000-000000000000

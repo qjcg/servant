@@ -1,4 +1,2 @@
-git.jgosset.net/srv/git/color.git v0.20.0 h1:Q40SpwePPQugyAX82MQvkTEeClzVJx8XL+qB2p7GvLg=
-git.jgosset.net/srv/git/color.git v0.20.0/go.mod h1:shr3qkwgpuE6J9YBCi9LUSnPTcG21gwJWbmAOKtk88w=
-golang.org/x/crypto v0.0.0-20181015023909-0c41d7ab0a0e/go.mod h1:6SG95UA2DQfeDnfUPMdvaQW0Q7yPrPDi9nlGo2tz2b4=
-golang.org/x/sys v0.0.0-20181019160139-8e24a49d80f8/go.mod h1:STP8DvDyc/dI5b8T5hshtkjS+E42TnysNCUPdjciGhY=
+golang.org/x/crypto v0.0.0-20190131182504-b8fe1690c613/go.mod h1:6SG95UA2DQfeDnfUPMdvaQW0Q7yPrPDi9nlGo2tz2b4=
+golang.org/x/sys v0.0.0-20190130150945-aca44879d564/go.mod h1:STP8DvDyc/dI5b8T5hshtkjS+E42TnysNCUPdjciGhY=
