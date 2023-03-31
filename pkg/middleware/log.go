@@ -6,7 +6,14 @@ import (
 	"net/http"
 	"strings"
 
-	"gossetx.com/color"
+	"github.com/fatih/color"
+)
+
+var (
+	green  = color.New(color.FgGreen).Add(color.Bold).SprintFunc()
+	yellow = color.New(color.FgYellow).SprintFunc()
+	red    = color.New(color.FgRed).Add(color.Bold).SprintFunc()
+	cyan   = color.New(color.FgCyan).Add(color.Bold).SprintFunc()
 )
 
 // Log provides middleware for logging HTTP requests.
@@ -24,15 +31,15 @@ func Log(next http.Handler) http.Handler {
 		var coloredMethod string
 		switch r.Method {
 		case "GET":
-			coloredMethod = color.Colored(color.GreenB, color.Black, r.Method)
+			coloredMethod = green(r.Method)
 		case "HEAD":
-			coloredMethod = color.Colored(color.Yellow, color.Black, r.Method)
+			coloredMethod = yellow(r.Method)
 		case "DELETE":
-			coloredMethod = color.Colored(color.RedB, color.Black, r.Method)
+			coloredMethod = red(r.Method)
 		case "POST":
-			coloredMethod = color.Colored(color.CyanB, color.Black, r.Method)
+			coloredMethod = cyan(r.Method)
 		default:
-			coloredMethod = color.Colored(color.RedB, color.Black, r.Method)
+			coloredMethod = red(r.Method)
 		}
 
 		log.Printf("%-s %-s %s\n",
